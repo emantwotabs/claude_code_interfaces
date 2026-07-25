@@ -1,0 +1,22 @@
+{
+  "name": "claude-code-interfaces",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Reusable component library for Airtable Interface Extensions, built with Claude Code",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/react": "^18.3.12",
+    "@types/node": "^22.9.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
