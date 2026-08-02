@@ -1,0 +1,93 @@
+/* 
+ * Airtable Interface Extensions Stylesheet with Tailwind CSS
+ * ============================================================
+ * This file provides Tailwind CSS with design tokens mapped from Airtable's design system. 
+ *
+ * How it works:
+ * -------------
+ * - Tailwind CSS v3 is imported via @tailwind directives below
+ * - Custom design tokens are configured in `tailwind.config.js`
+ * - You can use Tailwind utility classes that automatically match Airtable's design system
+ * - Example: `bg-gray-gray50` uses Airtable's gray50 color
+ *
+ * **This Stylesheet is optional!**
+ * --------------------------------
+ * You are *not* required to use Tailwind. To opt-out:
+ * 1. Remove the `import './style.css';` line from `index.tsx`.
+ * 2. Remove the bundler configuration from `block.json`.
+ * 3. (Optional) Delete the `style.css`, `bundler.js`, and `tailwind.config.js` files.
+ *
+ * Using Tailwind classes:
+ * ----------------------
+ * You can use Tailwind classes that are mapped to Airtable's design tokens:
+ * - Colors: `text-gray-gray900` (uses Airtable's gray900), `bg-blue-blue` (uses Airtable's blue)
+ * - Spacing: `p-4` (16px), `m-2` (8px) 
+ * - Typography: `text-base` (13px, Airtable's body-default), `font-display` (Inter Display)
+ * - Shadows: `shadow-sm` (uses Airtable's elevation-low)
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.chart-toolbar {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.chart-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chart-field-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgb(105, 108, 115);
+}
+
+.chart-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23696c73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    border: 1px solid rgb(229, 233, 240);
+    border-radius: 6px;
+    padding: 8px 32px 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(41, 42, 45);
+    min-width: 180px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chart-select:hover {
+    border-color: rgb(196, 199, 205);
+}
+
+.chart-select:focus {
+    outline: none;
+    border-color: rgb(22, 110, 225);
+    box-shadow: 0 0 0 3px rgba(22, 110, 225, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+    .chart-field-label {
+        color: rgb(151, 154, 160);
+    }
+
+    .chart-select {
+        background-color: rgb(45, 48, 53);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23c4c7cd' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        border-color: rgb(65, 69, 77);
+        color: rgb(229, 233, 240);
+    }
+}
