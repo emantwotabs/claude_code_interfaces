@@ -35,13 +35,53 @@ npm install
 Each package is consumed directly from TypeScript source (no build step
 required) via npm workspaces, matching the CLI's sibling-directory bundling.
 
-To scaffold a new deployed extension:
+## Using the design tokens
+
+`@claude-code-interfaces/tokens` exports Airtable's real color palette plus
+spacing/radii/typography scales, so primitives and apps can style themselves
+without depending on the beta `@airtable/blocks` runtime export:
+
+```ts
+import { colors, airtableColors, spacing, radii, typography } from "@claude-code-interfaces/tokens";
+
+// semantic tones, e.g. for a Badge
+colors.blue; // "rgb(22, 110, 225)"
+
+// full palette with light/dark variants, e.g. for Tailwind config
+airtableColors.blue.light2;
+```
+
+## Starting a new extension from a template app
+
+The fastest way to start a new deployed extension is to copy an existing
+`apps/` project rather than running `block init` from scratch — you inherit
+the shared-package wiring, Tailwind config, lint/tsconfig setup, and editor
+rules for free. `apps/test` is the minimal starting point; `apps/pivot-table`
+is a fuller example if you want to see the primitives/helpers in use.
 
 ```
-npm install -g @airtable/blocks-cli
-cd apps
-block init <extension-name>
+cp -R apps/test apps/<extension-name>
+cd apps/<extension-name>
+rm -rf node_modules .tmp .block
 ```
 
-then wire it up to import `@claude-code-interfaces/tokens`,
-`@claude-code-interfaces/primitives`, and `@claude-code-interfaces/helpers`.
+Then:
+
+1. **Rename the package** — update `name` in `package.json` to
+   `@claude-code-interfaces/app-<extension-name>`.
+2. **Re-attach to a base.** Interface extensions are tied to the base/interface
+   they were created in (see `docs/interface-extensions-sdk-research.md`,
+   finding #4) — the copied `.block/remote.json` pointed at the *old* app's
+   block, which is why it's removed above. Run `block init` inside the new
+   app directory to create a fresh block and reconnect it to the base/interface
+   you're actually deploying to.
+3. **Install and develop:**
+   ```
+   npm install
+   block run
+   ```
+
+The app already imports `@claude-code-interfaces/tokens`,
+`@claude-code-interfaces/primitives`, and `@claude-code-interfaces/helpers`
+as workspace dependencies — keep using those instead of duplicating UI or
+data-access logic (see `apps/README.md`).
