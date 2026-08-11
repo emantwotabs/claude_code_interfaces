@@ -1,5 +1,9 @@
 # claude-code-interfaces
 
+📘 **[Read the repo brief](https://claude.ai/code/artifact/8a46cabd-6cba-41e8-b303-d5a8ab524f57)** — a
+styled overview of this repo's layout, packages, and all nine apps.
+(Private artifact — share it from claude.ai if others on your team need access.)
+
 Reusable component library for Airtable **Interface Extensions**, built with
 Claude Code. See `docs/interface-extensions-sdk-research.md` for the full
 feasibility research this repo's structure is based on.
