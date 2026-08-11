@@ -4,3 +4,7 @@ dist/
 .DS_Store
 .env
 .env.local
+
+# named remotes (block add-remote) carry real base IDs from local dev sessions —
+# the default .block/remote.json (baseId "NONE" until block init/release) stays tracked
+**/.block/*.remote.json

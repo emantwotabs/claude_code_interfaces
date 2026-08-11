@@ -1,0 +1,128 @@
+/*
+ * Airtable Interface Extensions Stylesheet with Tailwind CSS
+ * ============================================================
+ * This file provides Tailwind CSS with design tokens mapped from Airtable's design system.
+ *
+ * How it works:
+ * -------------
+ * - Tailwind CSS v3 is imported via @tailwind directives below
+ * - Custom design tokens are configured in `tailwind.config.js`
+ * - You can use Tailwind utility classes that automatically match Airtable's design system
+ * - Example: `bg-gray-gray50` uses Airtable's gray50 color
+ *
+ * **This Stylesheet is optional!**
+ * --------------------------------
+ * You are *not* required to use Tailwind. To opt-out:
+ * 1. Remove the `import './style.css';` line from `index.tsx`.
+ * 2. Remove the bundler configuration from `block.json`.
+ * 3. (Optional) Delete the `style.css`, `bundler.js`, and `tailwind.config.js` files.
+ *
+ * Using Tailwind classes:
+ * ----------------------
+ * You can use Tailwind classes that are mapped to Airtable's design tokens:
+ * - Colors: `text-gray-gray900` (uses Airtable's gray900), `bg-blue-blue` (uses Airtable's blue)
+ * - Spacing: `p-4` (16px), `m-2` (8px)
+ * - Typography: `text-base` (13px, Airtable's body-default), `font-display` (Inter Display)
+ * - Shadows: `shadow-sm` (uses Airtable's elevation-low)
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.org-note {
+    font-size: 12.5px;
+    color: rgb(170, 45, 0);
+    background: rgb(255, 236, 227);
+    border: 1px solid rgb(255, 224, 204);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+}
+
+.org-tree {
+    border: 1px solid rgb(229, 233, 240);
+    border-radius: 8px;
+    background: #fff;
+    padding: 10px 8px;
+}
+
+.org-node-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 6px;
+    border-radius: 6px;
+}
+
+.org-node-row:hover {
+    background: rgb(249, 250, 251);
+}
+
+.org-toggle {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: rgb(105, 108, 115);
+    font-size: 11px;
+    padding: 0;
+}
+
+.org-toggle-leaf {
+    cursor: default;
+}
+
+.org-node-name {
+    font-size: 13px;
+    color: rgb(41, 42, 45);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.org-node-cycle {
+    color: rgb(170, 45, 0);
+    font-size: 12.5px;
+    font-style: italic;
+}
+
+.org-children {
+    border-left: 1px solid rgb(229, 233, 240);
+    margin-left: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .org-note {
+        color: rgb(255, 182, 142);
+        background: rgba(213, 68, 1, 0.12);
+        border-color: rgba(213, 68, 1, 0.3);
+    }
+
+    .org-tree {
+        background: rgb(45, 48, 53);
+        border-color: rgb(65, 69, 77);
+    }
+
+    .org-node-row:hover {
+        background: rgb(38, 40, 44);
+    }
+
+    .org-toggle {
+        color: rgb(151, 154, 160);
+    }
+
+    .org-node-name {
+        color: rgb(229, 233, 240);
+    }
+
+    .org-children {
+        border-left-color: rgb(65, 69, 77);
+    }
+}

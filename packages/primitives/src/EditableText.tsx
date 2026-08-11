@@ -1,5 +1,5 @@
 import * as React from "react";
-import { colors, radii, spacing, typography } from "@claude-code-interfaces/tokens";
+import { airtableColors, radii, spacing, typography } from "@claude-code-interfaces/tokens";
 
 export interface EditableTextProps {
   value: string;
@@ -33,7 +33,7 @@ export function EditableText({ value, onCommit, placeholder, disabled }: Editabl
         onClick={() => !disabled && setIsEditing(true)}
         style={{
           cursor: disabled ? "default" : "text",
-          color: value ? colors.gray[900] : colors.gray[500],
+          color: value ? airtableColors.gray.dark1 : airtableColors.gray.base,
           fontSize: typography.fontSize.md,
         }}
       >
@@ -60,7 +60,7 @@ export function EditableText({ value, onCommit, placeholder, disabled }: Editabl
         fontSize: typography.fontSize.md,
         padding: spacing[1],
         borderRadius: radii.sm,
-        border: `1px solid ${colors.blue[300]}`,
+        border: `1px solid ${airtableColors.blue.base}`,
         outline: "none",
       }}
     />

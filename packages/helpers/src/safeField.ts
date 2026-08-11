@@ -15,7 +15,7 @@ export interface FieldLike {
   id: string;
   name: string;
   type: string;
-  options?: { choices?: Array<{ name: string; color?: string }> };
+  options?: { choices?: Array<{ name: string; color?: string }> } | null;
 }
 
 export interface TableLike {

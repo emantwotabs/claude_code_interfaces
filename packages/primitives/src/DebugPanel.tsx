@@ -1,5 +1,5 @@
 import * as React from "react";
-import { colors, radii, spacing, typography } from "@claude-code-interfaces/tokens";
+import { airtableColors, radii, spacing, typography } from "@claude-code-interfaces/tokens";
 
 export interface DebugPanelProps {
   label?: string;
@@ -17,7 +17,7 @@ export function DebugPanel({ label = "Debug", data, defaultOpen = false }: Debug
   return (
     <div
       style={{
-        border: `1px solid ${colors.gray[300]}`,
+        border: `1px solid ${airtableColors.gray.light1}`,
         borderRadius: radii.md,
         fontFamily: "monospace",
         fontSize: typography.fontSize.xs,
@@ -30,7 +30,7 @@ export function DebugPanel({ label = "Debug", data, defaultOpen = false }: Debug
           width: "100%",
           textAlign: "left",
           padding: spacing[2],
-          background: colors.gray[50],
+          background: airtableColors.gray.light3,
           border: "none",
           cursor: "pointer",
           fontWeight: typography.fontWeight.medium,
@@ -44,7 +44,7 @@ export function DebugPanel({ label = "Debug", data, defaultOpen = false }: Debug
             margin: 0,
             padding: spacing[2],
             overflowX: "auto",
-            color: colors.gray[900],
+            color: airtableColors.gray.dark1,
           }}
         >
           {JSON.stringify(data, null, 2)}

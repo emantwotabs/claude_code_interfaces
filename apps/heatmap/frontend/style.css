@@ -1,0 +1,162 @@
+/*
+ * Airtable Interface Extensions Stylesheet with Tailwind CSS
+ * ============================================================
+ * This file provides Tailwind CSS with design tokens mapped from Airtable's design system.
+ *
+ * How it works:
+ * -------------
+ * - Tailwind CSS v3 is imported via @tailwind directives below
+ * - Custom design tokens are configured in `tailwind.config.js`
+ * - You can use Tailwind utility classes that automatically match Airtable's design system
+ * - Example: `bg-gray-gray50` uses Airtable's gray50 color
+ *
+ * **This Stylesheet is optional!**
+ * --------------------------------
+ * You are *not* required to use Tailwind. To opt-out:
+ * 1. Remove the `import './style.css';` line from `index.tsx`.
+ * 2. Remove the bundler configuration from `block.json`.
+ * 3. (Optional) Delete the `style.css`, `bundler.js`, and `tailwind.config.js` files.
+ *
+ * Using Tailwind classes:
+ * ----------------------
+ * You can use Tailwind classes that are mapped to Airtable's design tokens:
+ * - Colors: `text-gray-gray900` (uses Airtable's gray900), `bg-blue-blue` (uses Airtable's blue)
+ * - Spacing: `p-4` (16px), `m-2` (8px)
+ * - Typography: `text-base` (13px, Airtable's body-default), `font-display` (Inter Display)
+ * - Shadows: `shadow-sm` (uses Airtable's elevation-low)
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.heat-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid rgb(229, 233, 240);
+    border-radius: 8px;
+    background: #fff;
+    padding: 16px;
+}
+
+.heat-months {
+    display: flex;
+    gap: 2px;
+}
+
+.heat-months-spacer {
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.heat-month-cell {
+    width: 12px;
+    flex-shrink: 0;
+    font-size: 9px;
+    color: rgb(151, 154, 160);
+}
+
+.heat-body {
+    display: flex;
+    gap: 4px;
+}
+
+.heat-daylabels {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.heat-daylabel {
+    height: 12px;
+    line-height: 12px;
+    font-size: 9px;
+    color: rgb(151, 154, 160);
+}
+
+.heat-columns {
+    display: flex;
+    gap: 2px;
+}
+
+.heat-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.heat-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: rgb(229, 233, 240);
+}
+
+.heat-cell-future {
+    background: transparent;
+}
+
+.heat-level-0 {
+    background: rgb(229, 233, 240);
+}
+
+.heat-level-1 {
+    background: rgb(207, 245, 209);
+}
+
+.heat-level-2 {
+    background: rgb(154, 224, 149);
+}
+
+.heat-level-3 {
+    background: rgb(4, 138, 14);
+}
+
+.heat-level-4 {
+    background: rgb(0, 100, 0);
+}
+
+.heat-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 10.5px;
+    color: rgb(151, 154, 160);
+}
+
+@media (prefers-color-scheme: dark) {
+    .heat-wrap {
+        background: rgb(45, 48, 53);
+        border-color: rgb(65, 69, 77);
+    }
+
+    .heat-month-cell,
+    .heat-daylabel,
+    .heat-legend {
+        color: rgb(151, 154, 160);
+    }
+
+    .heat-level-0 {
+        background: rgb(65, 69, 77);
+    }
+
+    .heat-level-1 {
+        background: rgb(23, 61, 26);
+    }
+
+    .heat-level-2 {
+        background: rgb(30, 92, 34);
+    }
+
+    .heat-level-3 {
+        background: rgb(45, 138, 51);
+    }
+
+    .heat-level-4 {
+        background: rgb(76, 199, 82);
+    }
+}

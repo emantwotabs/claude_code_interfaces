@@ -1,0 +1,125 @@
+/*
+ * Airtable Interface Extensions Stylesheet with Tailwind CSS
+ * ============================================================
+ * This file provides Tailwind CSS with design tokens mapped from Airtable's design system.
+ *
+ * How it works:
+ * -------------
+ * - Tailwind CSS v3 is imported via @tailwind directives below
+ * - Custom design tokens are configured in `tailwind.config.js`
+ * - You can use Tailwind utility classes that automatically match Airtable's design system
+ * - Example: `bg-gray-gray50` uses Airtable's gray50 color
+ *
+ * **This Stylesheet is optional!**
+ * --------------------------------
+ * You are *not* required to use Tailwind. To opt-out:
+ * 1. Remove the `import './style.css';` line from `index.tsx`.
+ * 2. Remove the bundler configuration from `block.json`.
+ * 3. (Optional) Delete the `style.css`, `bundler.js`, and `tailwind.config.js` files.
+ *
+ * Using Tailwind classes:
+ * ----------------------
+ * You can use Tailwind classes that are mapped to Airtable's design tokens:
+ * - Colors: `text-gray-gray900` (uses Airtable's gray900), `bg-blue-blue` (uses Airtable's blue)
+ * - Spacing: `p-4` (16px), `m-2` (8px)
+ * - Typography: `text-base` (13px, Airtable's body-default), `font-display` (Inter Display)
+ * - Shadows: `shadow-sm` (uses Airtable's elevation-low)
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dir-search {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    border: 1px solid rgb(229, 233, 240);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 13px;
+    color: rgb(41, 42, 45);
+    background: #fff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dir-search:focus {
+    outline: none;
+    border-color: rgb(22, 110, 225);
+    box-shadow: 0 0 0 3px rgba(22, 110, 225, 0.15);
+}
+
+.dir-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgb(229, 233, 240);
+    border: 1px solid rgb(229, 233, 240);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 480px;
+}
+
+.dir-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.dir-row:hover {
+    background: rgb(249, 250, 251);
+}
+
+.dir-row-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(41, 42, 45);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dir-empty {
+    padding: 14px;
+    background: #fff;
+    font-size: 13px;
+    color: rgb(151, 154, 160);
+}
+
+@media (prefers-color-scheme: dark) {
+    .dir-search {
+        background: rgb(45, 48, 53);
+        border-color: rgb(65, 69, 77);
+        color: rgb(229, 233, 240);
+    }
+
+    .dir-list {
+        background: rgb(65, 69, 77);
+        border-color: rgb(65, 69, 77);
+    }
+
+    .dir-row {
+        background: rgb(45, 48, 53);
+    }
+
+    .dir-row:hover {
+        background: rgb(38, 40, 44);
+    }
+
+    .dir-row-title {
+        color: rgb(229, 233, 240);
+    }
+
+    .dir-empty {
+        background: rgb(45, 48, 53);
+        color: rgb(151, 154, 160);
+    }
+}

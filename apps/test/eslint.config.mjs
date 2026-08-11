@@ -18,5 +18,10 @@ export default defineConfig([
                 version: 'detect',
             },
         },
+        rules: {
+            // Leading-underscore is this repo's convention for "captured but
+            // intentionally unused" (see the `pat` custom property in gallery/test).
+            '@typescript-eslint/no-unused-vars': ['error', {argsIgnorePattern: '^_', varsIgnorePattern: '^_'}],
+        },
     },
 ]);

@@ -9,8 +9,11 @@ import type {Base} from '@airtable/blocks/interface/models';
 import type {Table} from '@airtable/blocks/interface/models';
 import type {Field} from '@airtable/blocks/interface/models';
 import type {Record as AirtableRecord} from '@airtable/blocks/interface/models';
-import {airtableColors, radii, spacing, typography} from '@claude-code-interfaces/tokens';
+import {airtableColorFamily, airtableColors, radii, spacing, typography} from '@claude-code-interfaces/tokens';
+import {DebugPanel} from '@claude-code-interfaces/primitives';
 import './style.css';
+
+const SELECT_TYPES = new Set<FieldType>([FieldType.SINGLE_SELECT, FieldType.MULTIPLE_SELECTS]);
 
 const GROUPABLE_TYPES = new Set<FieldType>([
     FieldType.SINGLE_SELECT,
@@ -30,7 +33,13 @@ const MEASURABLE_TYPES = new Set<FieldType>([
 ]);
 
 function getCustomProperties(base: Base) {
-    return [{key: 'dataTable', label: 'Data Table', type: 'table' as const, defaultValue: base.tables[0]}];
+    return [
+        {key: 'dataTable', label: 'Data Table', type: 'table' as const, defaultValue: base.tables[0]},
+        // Prompted at creation/setup time via the properties panel. Not used for any
+        // API calls yet — this just wires the intake step so future visuals built from
+        // this template can read customPropertyValueByKey.pat without re-plumbing it.
+        {key: 'pat', label: 'Airtable Personal Access Token', type: 'string' as const, defaultValue: ''},
+    ];
 }
 
 function labelForGroup(record: AirtableRecord, field: Field): string {
@@ -51,15 +60,19 @@ function labelForGroup(record: AirtableRecord, field: Field): string {
 function BarChart() {
     const {customPropertyValueByKey} = useCustomProperties(getCustomProperties);
     const table = customPropertyValueByKey.dataTable as Table | null | undefined;
+    const pat = customPropertyValueByKey.pat as string | undefined; // wired, unused for now
 
     if (!table) {
         return <div style={{padding: spacing[4]}}>Open the properties panel and choose a Data Table.</div>;
     }
 
-    return <BarChartForTable table={table} />;
+    return <BarChartForTable table={table} pat={pat} />;
 }
 
-function BarChartForTable({table}: {table: Table}) {
+function BarChartForTable({table, pat: _pat}: {table: Table; pat?: string}) {
+    // _pat: captured by the properties-panel intake step above, not yet consumed.
+    // Visuals copied from this template that need to call api.airtable.com directly
+    // can read it here instead of adding their own custom property.
     const records = useRecords(table);
 
     const groupableFields = React.useMemo<Field[]>(
@@ -177,6 +190,63 @@ function BarChartForTable({table}: {table: Table}) {
                     <div style={{fontSize: typography.fontSize.sm, color: airtableColors.gray.dark1}}>No records to chart.</div>
                 )}
             </div>
+            {SELECT_TYPES.has(xField.type) && <ColorAudit field={xField} />}
+        </div>
+    );
+}
+
+/**
+ * Ad-hoc verification, not a permanent feature: reads the real `color` string
+ * Airtable assigns to each choice of a select field and checks it against
+ * airtableColorFamily() — confirming the "10 hue families, no custom colors"
+ * claim in the repo's /constraints guide against live data instead of docs.
+ */
+function ColorAudit({field}: {field: Field}) {
+    const choices =
+        (field.options as {choices?: Array<{id: string; name: string; color?: string}>} | null)?.choices ?? [];
+
+    if (choices.length === 0) return null;
+
+    return (
+        <div style={{marginTop: spacing[8]}}>
+            <div
+                style={{
+                    fontSize: typography.fontSize.xs,
+                    fontWeight: typography.fontWeight.bold,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                    color: airtableColors.gray.dark1,
+                    marginBottom: spacing[3],
+                }}
+            >
+                Color palette check — {field.name}
+            </div>
+            <div style={{display: 'flex', flexDirection: 'column', gap: spacing[2], marginBottom: spacing[3]}}>
+                {choices.map((choice) => {
+                    const family = airtableColorFamily(choice.color);
+                    return (
+                        <div key={choice.id} style={{display: 'flex', alignItems: 'center', gap: spacing[3]}}>
+                            <span style={{width: 140, fontSize: typography.fontSize.sm, flexShrink: 0}}>{choice.name}</span>
+                            <code style={{fontSize: typography.fontSize.xs, color: airtableColors.gray.dark1, width: 140}}>
+                                {choice.color ?? '(none)'}
+                            </code>
+                            <span style={{fontSize: typography.fontSize.sm}}>→</span>
+                            <span style={{fontSize: typography.fontSize.sm, width: 70}}>{family}</span>
+                            <span
+                                style={{
+                                    width: 18,
+                                    height: 18,
+                                    borderRadius: radii.sm,
+                                    background: airtableColors[family].base,
+                                    flexShrink: 0,
+                                }}
+                                title={`airtableColors.${family}.base`}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+            <DebugPanel label="Raw field.options (from the live base)" data={field.options} />
         </div>
     );
 }

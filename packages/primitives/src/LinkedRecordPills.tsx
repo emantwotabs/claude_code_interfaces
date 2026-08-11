@@ -1,4 +1,4 @@
-import { colors, radii, spacing, typography } from "@claude-code-interfaces/tokens";
+import { airtableColors, radii, spacing, typography } from "@claude-code-interfaces/tokens";
 
 export interface LinkedRecordPillItem {
   id: string;
@@ -27,9 +27,9 @@ export function LinkedRecordPills({ records, onRemove }: LinkedRecordPillsProps)
             gap: spacing[1],
             padding: `${spacing[1]} ${spacing[2]}`,
             borderRadius: radii.md,
-            backgroundColor: colors.gray[100],
+            backgroundColor: airtableColors.gray.light2,
             fontSize: typography.fontSize.sm,
-            color: colors.gray[900],
+            color: airtableColors.gray.dark1,
           }}
         >
           {record.name}
@@ -42,7 +42,7 @@ export function LinkedRecordPills({ records, onRemove }: LinkedRecordPillsProps)
                 border: "none",
                 background: "none",
                 cursor: "pointer",
-                color: colors.gray[500],
+                color: airtableColors.gray.base,
                 padding: 0,
                 fontSize: typography.fontSize.sm,
                 lineHeight: 1,

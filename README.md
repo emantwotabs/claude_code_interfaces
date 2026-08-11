@@ -56,8 +56,12 @@ airtableColors.blue.light2;
 The fastest way to start a new deployed extension is to copy an existing
 `apps/` project rather than running `block init` from scratch — you inherit
 the shared-package wiring, Tailwind config, lint/tsconfig setup, and editor
-rules for free. `apps/test` is the minimal starting point; `apps/pivot-table`
-is a fuller example if you want to see the primitives/helpers in use.
+rules for free. `apps/test` is the minimal starting point; `apps/pivot-table`,
+`apps/gallery`, `apps/kpi-strip`, `apps/scoring-calculator`, `apps/review-queue`,
+`apps/org-chart`, `apps/heatmap`, and `apps/search-directory` are fuller
+examples if you want to see the primitives/helpers in use, or a pattern
+(custom properties, permission-checked writes, cross-table reads) close to
+what you're about to build.
 
 ```
 cp -R apps/test apps/<extension-name>
