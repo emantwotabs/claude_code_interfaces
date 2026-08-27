@@ -77,17 +77,35 @@ Then:
 
 1. **Rename the package** — update `name` in `package.json` to
    `@claude-code-interfaces/app-<extension-name>`.
-2. **Re-attach to a base.** Interface extensions are tied to the base/interface
-   they were created in (see `docs/interface-extensions-sdk-research.md`,
+2. **Get a real block ID from Airtable — in the browser, not the CLI.** A
+   `blockId` only exists once Airtable's servers create one; nothing local
+   can generate a working one. In the target base's Interface Designer, open
+   a Dashboard/standalone page → **Add a custom element** → **Create new
+   extension** (or the same from Builder Hub's
+   [Custom extensions](https://airtable.com/create/extensions) list). Airtable
+   hands you either a `block init <baseId-or-NONE>/blk<realId> --template=...
+   <dir>` command or creates the placement directly — either way, you only
+   need the `<baseId>/blk<realId>` pair out of it, not the template/new-dir
+   part, since the directory from step 1 is already your scaffold.
+3. **Attach this app to that ID.** Interface extensions are tied to the
+   base/block they're attached to (see `docs/interface-extensions-sdk-research.md`,
    finding #4) — the copied `.block/remote.json` pointed at the *old* app's
-   block, which is why it's removed above. Run `block init` inside the new
-   app directory to create a fresh block and reconnect it to the base/interface
-   you're actually deploying to.
-3. **Install and develop:**
+   block, which is why it's removed above, and a locally-invented ID won't
+   work either: Interface Designer's element picker only shows extensions
+   Airtable's servers already know about.
+   ```
+   cd apps/<extension-name>
+   block add-remote <baseId-or-NONE>/blk<realId> live
+   ```
+4. **Install and develop:**
    ```
    npm install
-   block run
+   block run --remote=live
    ```
+   In Interface Designer, click `</> Develop` on the element from step 2 and
+   point it at the printed URL (typically `https://localhost:9000`). First
+   load may need you to visit that URL directly once and accept the
+   self-signed certificate warning before Develop will connect.
 
 The app already imports `@claude-code-interfaces/tokens`,
 `@claude-code-interfaces/primitives`, and `@claude-code-interfaces/helpers`

@@ -879,7 +879,7 @@
       <div class="step step-once">
         <div class="step-body">
           <div class="step-head"><span class="step-name">Set up the CLI</span><span class="step-freq">once per machine, skip if already done</span></div>
-          <p>Install the CLI globally, then create a Personal Access Token in Airtable with the <code style="font-family:inherit;">block:manage</code> scope and register it — <code style="font-family:inherit;">block init</code> in step 4 authenticates against this.</p>
+          <p>Install the CLI globally, then create a Personal Access Token in Airtable with the <code style="font-family:inherit;">block:manage</code> scope and register it — step 5's <code style="font-family:inherit;">block add-remote</code> authenticates against this.</p>
           <code>npm install -g @airtable/blocks-cli
 block set-api-key</code>
         </div>
@@ -908,16 +908,22 @@ cp -R apps/test apps/&lt;extension-name&gt;</code>
       </div>
       <div class="step">
         <div class="step-body">
-          <div class="step-head"><span class="step-name">Re-attach to a base</span><span class="step-freq">the step that matters most</span></div>
-          <p>Run from inside <code style="font-family:inherit;">apps/&lt;extension-name&gt;</code>. Extensions are permanently bound to whichever base they're initialized against, so skipping this leaves the copied block pointed at <code style="font-family:inherit;">test</code>'s original base.</p>
-          <code>cd apps/&lt;extension-name&gt;
-block init</code>
+          <div class="step-head"><span class="step-name">Get a real block ID from Airtable</span><span class="step-freq">do this in the browser, not the CLI</span></div>
+          <p>The single most-skipped step. A <code style="font-family:inherit;">blockId</code> only exists once Airtable's servers create one for you — nothing local can generate a working one.</p>
           <ul class="substeps">
-            <li>Have the target base open in Airtable first — you'll need its ID, the <code style="font-family:inherit;">appXXXXXXXXXXXXXX</code> segment of the base's URL.</li>
-            <li>The CLI walks you through picking the workspace, then the base, using the PAT from step 0.</li>
-            <li>It writes a fresh <code style="font-family:inherit;">.block/remote.json</code> in this app directory, binding it to that base — this is the file the <code style="font-family:inherit;">rm -rf</code> in step 2 cleared out.</li>
-            <li>The specific interface (not just the base) gets chosen afterward, in Interface Designer itself — see step 5.</li>
+            <li>In the target base's Interface Designer, open a Dashboard/standalone page → <b>Add a custom element</b> → <b>Create new extension</b> (or the same from Builder Hub's <a href="https://airtable.com/create/extensions" target="_blank" rel="noopener">Custom extensions</a> list).</li>
+            <li>Airtable hands you either a ready-to-paste <code style="font-family:inherit;">block init &lt;baseId-or-NONE&gt;/blk&lt;realId&gt; --template=... &lt;dir&gt;</code> command, or creates the placement directly and shows its properties panel.</li>
+            <li>You only need the <code style="font-family:inherit;">&lt;baseId&gt;/blk&lt;realId&gt;</code> pair out of that — ignore the <code style="font-family:inherit;">--template</code>/new-directory part, since <code style="font-family:inherit;">apps/&lt;extension-name&gt;</code> from step 1 is already your scaffold.</li>
           </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-body">
+          <div class="step-head"><span class="step-name">Attach the app to that ID</span><span class="step-freq">the step that matters most</span></div>
+          <p>Run from inside <code style="font-family:inherit;">apps/&lt;extension-name&gt;</code>, using the real pair from the previous step. Extensions are permanently bound to whichever base/block they're attached to, so skipping this — or inventing an ID instead of getting a real one — leaves the app either pointed at the wrong base or at nothing at all.</p>
+          <code>cd apps/&lt;extension-name&gt;
+block add-remote &lt;baseId-or-NONE&gt;/blk&lt;realId&gt; live</code>
+          <p style="margin-top:8px;">This writes <code style="font-family:inherit;">.block/live.remote.json</code> in this app directory — the file step 2's <code style="font-family:inherit;">rm -rf</code> clears out on the next copy, and the reason it's gitignored (<code style="font-family:inherit;">**/.block/*.remote.json</code>) rather than committed.</p>
         </div>
       </div>
       <div class="step">
@@ -930,9 +936,9 @@ block init</code>
       <div class="step">
         <div class="step-body">
           <div class="step-head"><span class="step-name">Preview it live</span></div>
-          <p>Start the local dev server, then in Interface Designer's edit mode, add (or point) a custom element at the printed URL to see it inside the actual interface.</p>
-          <code>block run</code>
-          <p style="margin-top:8px;">→ typically <code style="font-family:inherit;background:none;border:none;padding:0;display:inline;">https://localhost:9000</code></p>
+          <p>Start the local dev server against the remote from step 5, then in Interface Designer open the same custom element Airtable created there and click <code style="font-family:inherit;">&lt;/&gt; Develop</code>, pointing it at the printed URL.</p>
+          <code>block run --remote=live</code>
+          <p style="margin-top:8px;">→ typically <code style="font-family:inherit;background:none;border:none;padding:0;display:inline;">https://localhost:9000</code> — first load may need you to visit that URL directly once and accept the self-signed certificate warning before Develop will connect.</p>
         </div>
       </div>
       <div class="step">
@@ -945,7 +951,11 @@ block init</code>
     </div>
 
     <div class="callout">
-      <b>Why step 4 can't be skipped:</b> developers who reuse an old <code style="font-family:inherit;">.block/remote.json</code> across bases hit Airtable's own guardrail — <code style="font-family:inherit;">{"error":"FORBIDDEN","message":"You can only run your development block in the original base where it was created."}</code>
+      <b>Why you can't invent a block ID:</b> Interface Designer's "Add a custom element" list only shows extensions Airtable's servers already know about. A locally made-up <code style="font-family:inherit;">blk...</code> string — even paired with a real base, even accepted without error by <code style="font-family:inherit;">block add-remote</code> or <code style="font-family:inherit;">block run</code> — was never registered on Airtable's end, so it can't be attached to a page. This isn't hypothetical: it's what happened building <code style="font-family:inherit;">gallery-editor</code> in this repo's history before step 4 above was corrected to require getting the ID from Airtable's UI first.
+    </div>
+
+    <div class="callout">
+      <b>Why step 5 can't be skipped either:</b> reusing an old <code style="font-family:inherit;">.block/remote.json</code> across bases — even a <i>real</i>, registered one, just the wrong one — hits Airtable's other guardrail: <code style="font-family:inherit;">{"error":"FORBIDDEN","message":"You can only run your development block in the original base where it was created."}</code>
     </div>
 
     <div class="callout" style="background:var(--accent-soft);border-color:color-mix(in srgb, var(--accent) 30%, var(--border));border-left-color:var(--accent);">
