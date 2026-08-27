@@ -79,14 +79,24 @@ Then:
    `@claude-code-interfaces/app-<extension-name>`.
 2. **Get a real block ID from Airtable — in the browser, not the CLI.** A
    `blockId` only exists once Airtable's servers create one; nothing local
-   can generate a working one. In the target base's Interface Designer, open
-   a Dashboard/standalone page → **Add a custom element** → **Create new
-   extension** (or the same from Builder Hub's
-   [Custom extensions](https://airtable.com/create/extensions) list). Airtable
-   hands you either a `block init <baseId-or-NONE>/blk<realId> --template=...
-   <dir>` command or creates the placement directly — either way, you only
-   need the `<baseId>/blk<realId>` pair out of it, not the template/new-dir
-   part, since the directory from step 1 is already your scaffold.
+   can generate a working one.
+   1. Go to Builder Hub's [Custom extensions](https://airtable.com/create/extensions)
+      list → **Create new extension**.
+   2. Pick any template — doesn't matter which, you're about to overwrite it
+      with `apps/<extension-name>`'s own code — then give it a name and tagline.
+
+      ![Airtable's Create extension dialog, showing a grid of starter templates and Extension name/Tagline fields](docs/images/create-extension.png)
+   3. Airtable creates it and lands you on **Development setup**, which hands
+      you a ready-to-copy `block init NONE/blk<realId> --template=... <dir>`
+      command. The base really is the literal string `NONE` at this point —
+      nothing has decided which base yet.
+
+      ![The Development setup tab's Develop your element and Publish your element sections, with the block init, cd, block run, and block release commands](docs/images/development-setup.png)
+   4. You only need the `NONE/blk<realId>` pair out of that command — skip
+      the `--template`/new-directory part, since `apps/<extension-name>` from
+      step 1 is already your scaffold. The real base gets attached
+      automatically the first time you add this element to an interface page
+      and turn on Development mode — that's step 4 below, not here.
 3. **Attach this app to that ID.** Interface extensions are tied to the
    base/block they're attached to (see `docs/interface-extensions-sdk-research.md`,
    finding #4) — the copied `.block/remote.json` pointed at the *old* app's
@@ -95,7 +105,7 @@ Then:
    Airtable's servers already know about.
    ```
    cd apps/<extension-name>
-   block add-remote <baseId-or-NONE>/blk<realId> live
+   block add-remote NONE/blk<realId> live
    ```
 4. **Install and develop:**
    ```
